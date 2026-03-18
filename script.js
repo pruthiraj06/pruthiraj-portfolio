@@ -1,0 +1,290 @@
+// == Page load glitch (instant) ==
+document.body.classList.add('page-glitch');
+document.body.addEventListener('animationend', function() {
+  document.body.classList.remove('page-glitch');
+}, { once: true });
+
+// == Scroll progress bar ==
+var progressBar = document.getElementById('scroll-progress');
+window.addEventListener('scroll', function() {
+  var pct = (window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100;
+  progressBar.style.width = pct + '%';
+}, { passive: true });
+
+// == Nav glassmorphism on scroll ==
+var nav = document.querySelector('nav');
+window.addEventListener('scroll', function() {
+  nav.classList.toggle('scrolled', window.scrollY > 40);
+}, { passive: true });
+
+// == Hero boot sequence + name glitch reveal ==
+var bootEls = [
+  document.getElementById('boot-line-1'),
+  document.getElementById('boot-line-2'),
+  document.getElementById('boot-line-3')
+];
+var bootLines = ['> initializing identity...', '> loading profile...', '> Pruthhiraj Barik'];
+var heroName = document.getElementById('hero-name');
+if (heroName) heroName.style.opacity = '0';
+
+function typeBootLine(el, text, cb) {
+  var i = 0;
+  el.textContent = '';
+  function tick() {
+    el.textContent = text.slice(0, ++i);
+    if (i < text.length) setTimeout(tick, 38);
+    else if (cb) setTimeout(cb, 220);
+  }
+  tick();
+}
+
+function glitchRevealName() {
+  if (!heroName) return;
+  heroName.style.transition = 'opacity 0.1s';
+  heroName.style.opacity = '1';
+  heroName.classList.add('glitching');
+  var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz@#$%&';
+  var original = 'Pruthhiraj Barik';
+  var flickers = 0;
+  var iv = setInterval(function() {
+    if (flickers > 10) {
+      clearInterval(iv);
+      heroName.textContent = original;
+      heroName.setAttribute('data-text', original);
+      heroName.classList.remove('glitching');
+      heroName.classList.add('name-revealed');
+      return;
+    }
+    heroName.textContent = original.split('').map(function(c) {
+      if (c === ' ') return ' ';
+      return Math.random() > 0.5 ? chars[Math.floor(Math.random() * chars.length)] : c;
+    }).join('');
+    flickers++;
+  }, 70);
+}
+
+function runBootSequence() {
+  if (!bootEls[0]) return;
+  typeBootLine(bootEls[0], bootLines[0], function() {
+    typeBootLine(bootEls[1], bootLines[1], function() {
+      typeBootLine(bootEls[2], bootLines[2], function() {
+        setTimeout(function() {
+          var heroBoot = document.getElementById('hero-boot');
+          if (heroBoot) { heroBoot.style.transition = 'opacity 0.5s'; heroBoot.style.opacity = '0'; }
+          setTimeout(glitchRevealName, 400);
+        }, 500);
+      });
+    });
+  });
+}
+setTimeout(runBootSequence, 400);
+
+// == Typing effect (hero roles) ==
+var roles = ['Web Penetration Tester', 'Vulnerability Analyst', 'Bug Hunter'];
+var roleIndex = 0, charIndex = 0, deleting = false;
+var typedEl = document.getElementById('typed-text');
+
+function type() {
+  var current = roles[roleIndex];
+  if (!deleting) {
+    typedEl.textContent = current.slice(0, ++charIndex);
+    if (charIndex === current.length) { deleting = true; setTimeout(type, 1800); return; }
+  } else {
+    typedEl.textContent = current.slice(0, --charIndex);
+    if (charIndex === 0) { deleting = false; roleIndex = (roleIndex + 1) % roles.length; }
+  }
+  setTimeout(type, deleting ? 55 : 85);
+}
+type();
+
+// == Canvas background ==
+var canvas = document.getElementById('bg-canvas');
+var ctx = canvas.getContext('2d');
+var offsetX = 0, offsetY = 0, scanY = 0;
+var particles = [], matrixCols = [];
+
+function resizeCanvas() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  initParticles();
+  initMatrix();
+}
+resizeCanvas();
+window.addEventListener('resize', resizeCanvas);
+
+document.addEventListener('mousemove', function(e) {
+  offsetX = (e.clientX / window.innerWidth - 0.5) * 18;
+  offsetY = (e.clientY / window.innerHeight - 0.5) * 18;
+}, { passive: true });
+
+function initParticles() {
+  particles = [];
+  var count = Math.floor((canvas.width * canvas.height) / 20000);
+  for (var i = 0; i < count; i++) {
+    particles.push({
+      x: Math.random() * canvas.width, y: Math.random() * canvas.height,
+      r: Math.random() * 1.3 + 0.3,
+      vx: (Math.random() - 0.5) * 0.35, vy: (Math.random() - 0.5) * 0.35,
+      alpha: Math.random() * 0.55 + 0.15
+    });
+  }
+}
+
+var matrixChars = '01ABCDEFGHIJKLMNOPQRSTUVWXYZ@#$%&*';
+function initMatrix() {
+  var cols = Math.floor(canvas.width / 18);
+  matrixCols = [];
+  for (var i = 0; i < cols; i++) {
+    matrixCols.push({
+      x: Math.random() * canvas.width,
+      y: Math.random() * -canvas.height,
+      speed: Math.random() * 0.8 + 0.3,
+      char: matrixChars[Math.floor(Math.random() * matrixChars.length)],
+      alpha: Math.random() * 0.22 + 0.04,
+      timer: 0
+    });
+  }
+}
+
+function drawScene() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  var size = 40;
+  var ox = ((offsetX % size) + size) % size;
+  var oy = ((offsetY % size) + size) % size;
+  ctx.strokeStyle = '#00ff9f'; ctx.lineWidth = 0.5;
+  for (var x = -size + ox; x <= canvas.width + size; x += size) {
+    ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, canvas.height); ctx.stroke();
+  }
+  for (var y = -size + oy; y <= canvas.height + size; y += size) {
+    ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(canvas.width, y); ctx.stroke();
+  }
+  var grad = ctx.createLinearGradient(0, scanY - 60, 0, scanY + 60);
+  grad.addColorStop(0, 'rgba(0,255,159,0)');
+  grad.addColorStop(0.5, 'rgba(0,255,159,0.2)');
+  grad.addColorStop(1, 'rgba(0,255,159,0)');
+  ctx.fillStyle = grad;
+  ctx.fillRect(0, scanY - 60, canvas.width, 120);
+  scanY += 0.55;
+  if (scanY > canvas.height + 60) scanY = -60;
+  ctx.font = '11px monospace';
+  matrixCols.forEach(function(col) {
+    col.y += col.speed; col.timer++;
+    if (col.timer % 18 === 0) col.char = matrixChars[Math.floor(Math.random() * matrixChars.length)];
+    if (col.y > canvas.height) { col.y = -20; col.x = Math.random() * canvas.width; }
+    ctx.fillStyle = 'rgba(0,255,159,' + col.alpha + ')';
+    ctx.fillText(col.char, col.x, col.y);
+  });
+  particles.forEach(function(p) {
+    p.x += p.vx; p.y += p.vy;
+    if (p.x < 0) p.x = canvas.width; if (p.x > canvas.width) p.x = 0;
+    if (p.y < 0) p.y = canvas.height; if (p.y > canvas.height) p.y = 0;
+    ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+    ctx.fillStyle = 'rgba(0,255,159,' + p.alpha + ')'; ctx.fill();
+  });
+  requestAnimationFrame(drawScene);
+}
+drawScene();
+
+// == Glitch on hover + ambient ==
+function triggerGlitch(el) {
+  if (el.classList.contains('glitching')) return;
+  el.classList.add('glitching');
+  setTimeout(function() { el.classList.remove('glitching'); }, 280);
+}
+document.querySelectorAll('.glitch-target').forEach(function(el) {
+  el.addEventListener('mouseenter', function() { triggerGlitch(el); });
+});
+function ambientGlitch() {
+  var targets = document.querySelectorAll('.glitch-target');
+  var el = targets[Math.floor(Math.random() * targets.length)];
+  if (el) triggerGlitch(el);
+  setTimeout(ambientGlitch, 4000 + Math.random() * 6000);
+}
+setTimeout(ambientGlitch, 5000);
+
+// == Terminal reveal ==
+var terminalLines = document.querySelectorAll('.t-line, .t-output');
+function revealTerminal() {
+  var delay = 0;
+  terminalLines.forEach(function(el) {
+    delay += el.classList.contains('t-output') ? 300 : 500;
+    setTimeout(function(e) { return function() { e.classList.add('t-visible'); }; }(el), delay);
+  });
+}
+
+// == Scroll reveal ==
+var revealObserver = new IntersectionObserver(function(entries) {
+  entries.forEach(function(entry) {
+    if (entry.isIntersecting) { entry.target.classList.add('visible'); revealObserver.unobserve(entry.target); }
+  });
+}, { threshold: 0.08 });
+document.querySelectorAll('section, .p-card, .skill-card, .terminal-window, .contact-box')
+  .forEach(function(el) { el.classList.add('fade-in'); revealObserver.observe(el); });
+
+var terminalSection = document.getElementById('terminal');
+var terminalRevealed = false;
+var termObserver = new IntersectionObserver(function(entries) {
+  if (entries[0].isIntersecting && !terminalRevealed) {
+    terminalRevealed = true;
+    setTimeout(revealTerminal, 700);
+    termObserver.disconnect();
+  }
+}, { threshold: 0.1 });
+if (terminalSection) termObserver.observe(terminalSection);
+
+// == Skill tags stagger ==
+var skillObserver = new IntersectionObserver(function(entries) {
+  entries.forEach(function(entry) {
+    if (entry.isIntersecting) {
+      var tags = entry.target.querySelectorAll('.skill-tags span');
+      tags.forEach(function(tag, i) {
+        setTimeout(function(t) { return function() { t.classList.add('tag-visible'); }; }(tag), i * 70);
+      });
+      skillObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.3 });
+document.querySelectorAll('.skill-card').forEach(function(c) { skillObserver.observe(c); });
+
+// == Active nav ==
+var sections = document.querySelectorAll('section[id]');
+var navLinks = document.querySelectorAll('nav a');
+window.addEventListener('scroll', function() {
+  var current = '';
+  sections.forEach(function(s) { if (window.scrollY >= s.offsetTop - 200) current = s.id; });
+  navLinks.forEach(function(a) {
+    a.classList.remove('active');
+    if (a.getAttribute('href') === '#' + current) a.classList.add('active');
+  });
+}, { passive: true });
+
+// == Copy to clipboard ==
+document.querySelectorAll('.contact-item[data-copy]').forEach(function(item) {
+  item.addEventListener('click', function(e) {
+    var val = item.getAttribute('data-copy');
+    if (!val) return;
+    e.preventDefault();
+    navigator.clipboard.writeText(val).then(function() {
+      item.classList.add('copied');
+      setTimeout(function() { item.classList.remove('copied'); }, 1800);
+    });
+  });
+});
+
+// == Footer typing ==
+var footerText = 'Built with passion for security - 2026';
+var footerEl = document.getElementById('footer-typed');
+var footerStarted = false;
+var footerObserver = new IntersectionObserver(function(entries) {
+  if (entries[0].isIntersecting && !footerStarted) {
+    footerStarted = true;
+    var i = 0;
+    function tick() {
+      if (i <= footerText.length) { footerEl.textContent = footerText.slice(0, i++); setTimeout(tick, 55); }
+    }
+    tick();
+    footerObserver.disconnect();
+  }
+}, { threshold: 0.5 });
+var footer = document.querySelector('footer');
+if (footer) footerObserver.observe(footer);

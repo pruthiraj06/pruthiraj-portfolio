@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pruthhiraj Barik — Penetration Tester</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600&family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Scroll progress -->
+  <div id="scroll-progress"></div>
+
+  <!-- Background -->
+  <canvas id="bg-canvas"></canvas>
+  <div id="vignette"></div>
+
+  <!-- NAV -->
+  <nav>
+    <span class="logo">&gt; pb<span class="cursor">_</span></span>
+    <ul>
+      <li><a href="#terminal">whoami</a></li>
+      <li><a href="#projects">projects</a></li>
+      <li><a href="#skills">skills</a></li>
+      <li><a href="#contact">contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-content">
+      <p class="hero-label">// cybersecurity professional</p>
+      <div class="hero-boot" id="hero-boot">
+        <p class="boot-line" id="boot-line-1"></p>
+        <p class="boot-line" id="boot-line-2"></p>
+        <p class="boot-line" id="boot-line-3"></p>
+      </div>
+      <h1 id="hero-name" class="glitch-target" data-text="Pruthhiraj Barik">Pruthhiraj Barik</h1>
+      <div class="typing-wrapper">
+        <span class="typing-prefix">&gt;&nbsp;</span>
+        <span id="typed-text"></span><span class="type-cursor">|</span>
+      </div>
+      <a href="#projects" class="btn-glow">See My Work <span class="arrow">→</span><span class="btn-scan"></span></a>
+    </div>
+  </section>
+
+  <!-- TERMINAL / ABOUT -->
+  <section id="terminal">
+    <div class="terminal-window">
+      <div class="terminal-bar">
+        <span class="dot red"></span>
+        <span class="dot yellow"></span>
+        <span class="dot green"></span>
+        <span class="terminal-title">bash — pruthhiraj@kali</span>
+      </div>
+      <div class="terminal-body">
+        <div class="t-line"><span class="t-prompt">pruthhiraj@kali:~$</span> <span class="t-cmd">whoami</span></div>
+        <div class="t-output">
+          <p>I'm a cybersecurity intern with hands-on experience in web application security,
+          penetration testing, and security compliance. I actively identify vulnerabilities
+          such as IDOR, Broken Access Control, and Injection flaws, and understand their
+          real-world impact on systems.</p>
+          <p>I work with tools like Burp Suite, SQLMap, and Nmap, and have a strong foundation
+          in networking and security principles. Alongside penetration testing, I am also
+          gaining exposure to compliance standards and security best practices.</p>
+        </div>
+        <div class="t-line"><span class="t-prompt">pruthhiraj@kali:~$</span> <span class="t-cmd">cat status.txt</span></div>
+        <div class="t-output">
+          <p><span class="t-key">Role&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</span> Cybersecurity Intern | Web Penetration Tester</p>
+          <p><span class="t-key">Focus&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</span> Web Application Security, VAPT</p>
+          <p><span class="t-key">Status&nbsp;&nbsp;&nbsp;&nbsp;:</span> <span class="t-green">Open to opportunities</span></p>
+          <p><span class="t-key">Location&nbsp;&nbsp;:</span> India</p>
+        </div>
+        <div class="t-line"><span class="t-prompt">pruthhiraj@kali:~$</span> <span class="t-cursor-blink">█</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section id="projects">
+    <div class="section-header">
+      <span class="section-tag">// 02. projects</span>
+      <h2 class="glitch-target" data-text="What I've Worked On">What I've Worked On</h2>
+    </div>
+    <div class="projects-grid">
+
+      <div class="p-card">
+        <div class="p-card-top">
+          <span class="p-icon">⚡</span>
+          <div class="p-card-links"></div>
+        </div>
+        <h3>Web Application Penetration Testing</h3>
+        <p>Tested web applications for security vulnerabilities such as SQL Injection, XSS, and IDOR. Used Burp Suite and SQLMap to intercept requests, manipulate parameters, and validate vulnerabilities. Documented findings with impact analysis and remediation recommendations.</p>
+        <div class="vuln-found">
+          <span class="vuln-label">Vulnerabilities Found:</span>
+          <span class="vuln-tag">SQL Injection</span>
+          <span class="vuln-tag">XSS</span>
+          <span class="vuln-tag">IDOR</span>
+          <span class="vuln-tag">Broken Access Control</span>
+        </div>
+        <div class="p-tools">
+          <span>Burp Suite</span><span>SQLMap</span><span>OWASP</span>
+        </div>
+      </div>
+
+      <div class="p-card">
+        <div class="p-card-top">
+          <span class="p-icon">🖥</span>
+          <div class="p-card-links"></div>
+        </div>
+        <h3>Hands-on Labs (TryHackMe / Practice Labs)</h3>
+        <p>Completed multiple hands-on labs focused on web security, networking, and privilege escalation. Practiced real-world attack scenarios and learned how vulnerabilities are exploited and mitigated. Improved practical penetration testing and problem-solving skills.</p>
+        <div class="vuln-found">
+          <span class="vuln-label">Topics Covered:</span>
+          <span class="vuln-tag">Web Security</span>
+          <span class="vuln-tag">Privilege Escalation</span>
+          <span class="vuln-tag">Networking</span>
+        </div>
+        <div class="p-tools">
+          <span>TryHackMe</span><span>Nmap</span><span>Wireshark</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- SKILLS -->
+  <section id="skills">
+    <div class="section-header">
+      <span class="section-tag">// 03. skills</span>
+      <h2 class="glitch-target" data-text="Technical Arsenal">Technical Arsenal</h2>
+    </div>
+    <div class="skills-grid">
+
+      <div class="skill-card">
+        <h3><span class="sk-icon">🔐</span> Pentesting</h3>
+        <div class="skill-tags">
+          <span>Web App Security Testing</span>
+          <span>VAPT</span>
+          <span>OWASP Top 10</span>
+          <span>IDOR</span>
+          <span>Broken Access Control</span>
+          <span>XSS</span>
+          <span>SQL Injection</span>
+        </div>
+      </div>
+
+      <div class="skill-card">
+        <h3><span class="sk-icon">🛠</span> Tools</h3>
+        <div class="skill-tags">
+          <span>Burp Suite</span>
+          <span>SQLMap</span>
+          <span>Nmap</span>
+          <span>Wireshark</span>
+        </div>
+      </div>
+
+      <div class="skill-card">
+        <h3><span class="sk-icon">🌐</span> Networking</h3>
+        <div class="skill-tags">
+          <span>TCP/IP</span>
+          <span>HTTP/HTTPS</span>
+          <span>DNS</span>
+          <span>Firewalls</span>
+          <span>VPN</span>
+          <span>OSI Model</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="section-header">
+      <span class="section-tag">// 04. contact</span>
+      <h2 class="glitch-target" data-text="Get In Touch">Get In Touch</h2>
+    </div>
+    <div class="contact-box">
+      <p>I specialize in web application penetration testing and vulnerability analysis. I'm open to opportunities where I can help identify security flaws and improve application security.</p>
+      <p>Looking for someone to test your application or discuss security issues? Let's connect.</p>
+      <div class="contact-links">
+        <a href="mailto:pruthirajbarik555@gmail.com" class="contact-item" data-copy="pruthirajbarik555@gmail.com"></a>
+          <span class="c-label">// email</span>
+          <span class="c-value">pruthirajbarik555@gmail.com</span>
+          <span class="copy-feedback">Copied!</span>
+        </a>
+        <a href="https://www.linkedin.com/in/pruthiraj-barik-9892a7247" target="_blank" class="contact-item" data-copy="pruthiraj-barik-9892a7247">
+          <span class="c-label">// linkedin</span>
+          <span class="c-value">pruthiraj-barik-9892a7247</span>
+          <span class="copy-feedback">Copied!</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p><span class="t-green">pruthhiraj@kali:~$</span> echo "<span id="footer-typed"></span><span id="footer-cursor">|</span>"</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
